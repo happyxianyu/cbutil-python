@@ -108,6 +108,11 @@ class Path(_Path):
     def str(self):
         return self.__str__()
 
+    @property
+    def quote(self):
+        if Path._Path == pathlib.WindowsPath:
+            s = self.str.replace('"', r'\"')
+            return f'"{s}"'
 
     def rel_to(self,path):
         return super().relative_to(path)
