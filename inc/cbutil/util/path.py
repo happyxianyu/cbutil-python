@@ -154,7 +154,7 @@ class Path(_Path):
     def to_str(self):
         return str(self)
 
-    def copy_to(self, dst, is_prefix = False, overwrite = True, ignore_exist = True):
+    def copy_to(self, dst, is_prefix = True, overwrite = True, ignore_exist = True):
         '''
         会自动创建当前不存在的父目录
         
@@ -189,9 +189,12 @@ class Path(_Path):
     def make_copy(self, name:str, overwrite=False):
         self.copy_to(self.prnt/name, is_prefix=False, overwrite=overwrite)
 
-    def move_to(self, dst):
+    def move_to(self, dst, is_prefix=True):
+        dst = Path(dst)
+        if is_prefix:
+            dst = dst/self.name
         a = self.to_str()
-        b = Path(dst).to_str()
+        b = dst.to_str()
         shutil.move(a,b)
 
     def make_archive(self, dst, format = None):
