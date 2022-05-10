@@ -175,7 +175,7 @@ class Path(_Path):
         else:
             if overwrite:
                 shutil.copyfile(a,b)
-            elif b.exists():
+            elif Path(b).exists():
                 raise FileExistsError()
 
     def copy_sons_to(self, dst, overwrite = True):

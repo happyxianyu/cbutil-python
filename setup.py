@@ -4,11 +4,11 @@ from setuptools import *
 
 setup(
     name='cbutil',
-    version='1.2.0',
+    version='1.2.1',
     packages=find_namespace_packages('inc'),
     package_dir={'cbutil': 'inc/cbutil'},
     install_requires=[
-        'chardet>=4.0.0'],
+        'chardet'],
     python_requires='>=3.8',
 
     url='https://github.com/happyxianyu/cbutil-python',

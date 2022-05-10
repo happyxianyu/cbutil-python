@@ -1,4 +1,7 @@
 rmdir dist -r
+rmdir cbutil.egg-info -r
+rmdir build -r
 python setup.py sdist bdist_wheel
-python -m twine upload --repository testpypi dist/*
-twine upload dist/*
+@REM python -m twine upload --repository testpypi dist/*
+@REM twine upload dist/*
+
