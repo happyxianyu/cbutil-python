@@ -139,12 +139,12 @@ class Path(_Path):
                         encoding = 'UTF-8'
         return super().open(mode,buffering, encoding,*args,**kwargs)
     
-    def mkdir(self, *args, overwrite =False, parents =True, **kwargs):
+    def mkdir(self, *args, update =False, parents =True, **kwargs):
         '''
         默认文件夹不存在则忽略，会自动创建不存在的父路径
         '''
         if self.exists():
-            if overwrite:
+            if update:
                 self.remove()
                 super().mkdir(*args, parents=parents, **kwargs)
         else:
@@ -165,7 +165,7 @@ class Path(_Path):
     def to_str(self):
         return str(self)
 
-    def copy_to(self, dst:'Path', is_prefix = True, overwrite = True, ignore_exist = True):
+    def copy_to(self, dst:'Path', is_prefix = True, update = True, ignore_exist = True):
         '''
         会自动创建当前不存在的父目录
         
@@ -182,34 +182,34 @@ class Path(_Path):
         if self.is_file():
             if not dst.prnt.exists():
                 dst.prnt.mkdir()
-            file_util.copy_file(self.str, dst.str, overwrite)
+            file_util.copy_file(self.str, dst.str, update)
         else:
             if not dst.prnt.exists():
                 dst.prnt.mkdir()
-            dir_util.copy_tree(self.str, dst.str, overwrite)
+            dir_util.copy_tree(self.str, dst.str, update)
 
 
-    def copy_sons_to(self, dst, overwrite = True):
+    def copy_sons_to(self, dst, update = True):
         dst = Path(dst)
         assert self.is_dir()
         for son in self.son_iter:
-            son.copy_to(dst/son.name, is_prefix=False, overwrite=overwrite)
+            son.copy_to(dst/son.name, is_prefix=False, update=update)
 
-    def make_copy(self, name:str, overwrite=False):
-        self.copy_to(self.prnt/name, is_prefix=False, overwrite=overwrite)
+    def make_copy(self, name:str, update=False):
+        self.copy_to(self.prnt/name, is_prefix=False, update=update)
 
-    def move_to(self, dst, is_prefix=True, overwrite=True, recursive=True):
+    def move_to(self, dst, is_prefix=True, update=True, recursive=True):
         dst = Path(dst)
         if is_prefix:
             dst = dst/self.name
         if recursive:
             for src in dfs(self, Path.get_son_iter, lambda p: p.is_file() or p.is_empty_dir()):
                 src:Path
-                if overwrite and dst.exists():
+                if update and dst.exists():
                     dst.remove()
                 shutil.move(src.str, (dst/src.rel_to(self)).str)
         else:
-            if overwrite and dst.exists():
+            if update and dst.exists():
                 dst.remove()
             shutil.move(self.str, dst.str)
 
