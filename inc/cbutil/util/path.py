@@ -154,7 +154,7 @@ class Path(_Path):
     def to_str(self):
         return str(self)
 
-    def copy_to(self, dst, is_prefix = False, overwrite = True):
+    def copy_to(self, dst, is_prefix = False, overwrite = True, ignore_exist = True):
         '''
         会自动创建当前不存在的父目录
         
@@ -173,9 +173,9 @@ class Path(_Path):
         if self.is_dir():
             shutil.copytree(a,b, dirs_exist_ok=overwrite)
         else:
-            if overwrite:
+            if overwrite or not Path(b).exists():
                 shutil.copyfile(a,b)
-            elif Path(b).exists():
+            elif not ignore_exist:
                 raise FileExistsError()
 
     def copy_sons_to(self, dst, overwrite = True):
