@@ -165,7 +165,7 @@ class Path(_Path):
     def to_str(self):
         return str(self)
 
-    def copy_to(self, dst, is_prefix = True, overwrite = True, ignore_exist = True):
+    def copy_to(self, dst:'Path', is_prefix = True, overwrite = True, ignore_exist = True):
         '''
         会自动创建当前不存在的父目录
         
@@ -180,18 +180,20 @@ class Path(_Path):
             dst = dst/self.name
         
         if self.is_file():
+            if not dst.prnt.exists():
+                dst.prnt.mkdir()
             file_util.copy_file(self.str, dst.str, overwrite)
         else:
+            if not dst.prnt.exists():
+                dst.prnt.mkdir()
             dir_util.copy_tree(self.str, dst.str, overwrite)
 
 
     def copy_sons_to(self, dst, overwrite = True):
         dst = Path(dst)
-        assert(self.is_dir() and dst.is_dir())
-        if not dst.exists():
-            dst.mkdir()
+        assert self.is_dir()
         for son in self.son_iter:
-            son.copy_to(dst/son.name, overwrite=overwrite)
+            son.copy_to(dst/son.name, is_prefix=False, overwrite=overwrite)
 
     def make_copy(self, name:str, overwrite=False):
         self.copy_to(self.prnt/name, is_prefix=False, overwrite=overwrite)

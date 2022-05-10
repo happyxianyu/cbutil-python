@@ -39,5 +39,14 @@ def test_copy_to():
     p1.copy_to(p2.prnt)
     assert p2.exists()
 
+def test_copy_sons_to():
+    test_tmp_path.remove()
+    p1 = test_tmp_path/'1/x'
+    ps1 = [p1/str(v) for v in range(10)]
+    for p in ps1:
+        p.mkdir()
+    p2 = test_tmp_path/'2/x'
+    p1.copy_sons_to(p2)
+    assert (p2/'1').exists()
 
 
