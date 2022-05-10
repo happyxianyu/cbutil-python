@@ -2,6 +2,7 @@
 import os
 import pathlib
 import shutil
+from distutils import file_util, dir_util
 from zipfile import ZipFile
 
 import chardet
@@ -13,6 +14,8 @@ from .util import get_unique_name
 from cbutil.util import dfs
 
 _Path = type(pathlib.Path(''))
+
+__all__ = ['Path']
 
 
 class Path(_Path):
@@ -173,18 +176,14 @@ class Path(_Path):
         
         若路径为目录，则会递归复制，
         '''
-        a = self.to_str()
         if is_prefix:
-            b = (Path(dst)/(self.name)).to_str()
+            dst = dst/self.name
+        
+        if self.is_file():
+            file_util.copy_file(self.str, dst.str, overwrite)
         else:
-            b = Path(dst).to_str()
-        if self.is_dir():
-            shutil.copytree(a,b, dirs_exist_ok=overwrite)
-        else:
-            if overwrite or not Path(b).exists():
-                shutil.copyfile(a,b)
-            elif not ignore_exist:
-                raise FileExistsError()
+            dir_util.copy_tree(self.str, dst.str, overwrite)
+
 
     def copy_sons_to(self, dst, overwrite = True):
         dst = Path(dst)
