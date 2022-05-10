@@ -1,7 +1,7 @@
 import re
 
-from .path import *
 from .iterutil import *
+from .path import *
 # from .util import *
 # from .url import *
 # from .pbar import *

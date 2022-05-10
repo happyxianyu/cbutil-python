@@ -19,10 +19,12 @@ def test_make_copy():
 
 
 def test_move_to():
-    f1 = test_tmp_path/'1/x'
-    f1.mkdir()
-    f2 = test_tmp_path/'2/x'
-    f1.move_to(f2.prnt)
-    assert f2.exists()
+    p1 = test_tmp_path/'1/x'
+    ps1 = [p1/str(v) for v in range(10)]
+    for p in ps1:
+        p.mkdir()
+    p2 = test_tmp_path/'2/x'
+    p1.move_to(p2.prnt)
+    assert p2.exists()
 
 

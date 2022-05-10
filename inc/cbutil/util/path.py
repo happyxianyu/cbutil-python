@@ -10,6 +10,8 @@ import chardet
 from .util import get_unique_name
 # from itertools import chain
 
+from cbutil.util import dfs
+
 _Path = type(pathlib.Path(''))
 
 
@@ -114,6 +116,12 @@ class Path(_Path):
             s = self.str.replace('"', r'\"')
             return f'"{s}"'
 
+    def is_empty_dir(self):
+        if self.is_dir():
+            for _ in self.son_iter:
+                return True
+        return False
+
     def rel_to(self,path):
         return super().relative_to(path)
 
@@ -189,13 +197,21 @@ class Path(_Path):
     def make_copy(self, name:str, overwrite=False):
         self.copy_to(self.prnt/name, is_prefix=False, overwrite=overwrite)
 
-    def move_to(self, dst, is_prefix=True):
+    def move_to(self, dst, is_prefix=True, overwrite=True, recursive=True):
         dst = Path(dst)
         if is_prefix:
             dst = dst/self.name
-        a = self.to_str()
-        b = dst.to_str()
-        shutil.move(a,b)
+        if recursive:
+            for src in dfs(self, Path.get_son_iter, lambda p: p.is_file() or p.is_empty_dir()):
+                src:Path
+                if overwrite and dst.exists():
+                    dst.remove()
+                shutil.move(src.str, (dst/src.rel_to(self)).str)
+        else:
+            if overwrite and dst.exists():
+                dst.remove()
+            shutil.move(self.str, dst.str)
+
 
     def make_archive(self, dst, format = None):
         dst = Path(dst)
