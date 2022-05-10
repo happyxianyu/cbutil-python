@@ -186,6 +186,9 @@ class Path(_Path):
         for son in self.son_iter:
             son.copy_to(dst/son.name, overwrite=overwrite)
 
+    def make_copy(self, name:str, overwrite=False):
+        self.copy_to(self.prnt/name, is_prefix=False, overwrite=overwrite)
+
     def move_to(self, dst):
         a = self.to_str()
         b = Path(dst).to_str()

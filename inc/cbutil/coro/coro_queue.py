@@ -36,10 +36,10 @@ class CoroDeque:
         self.pop_wait_num = 0
         self.put_wait_num = 0
 
-        if self.is_full():
-            self._put_lock.acquire()
-        if len(self) == 0:
-            self._pop_lock.acquire()
+        # if self.is_full():
+        #     self._put_lock.acquire()
+        # if len(self) == 0:
+        #     self._pop_lock.acquire()
 
     @property
     def maxlen(self):
