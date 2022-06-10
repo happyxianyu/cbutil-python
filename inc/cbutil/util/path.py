@@ -122,7 +122,8 @@ class Path(_Path):
     def is_empty_dir(self):
         if self.is_dir():
             for _ in self.son_iter:
-                return True
+                return False
+            return True
         return False
 
     def rel_to(self,path):
