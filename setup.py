@@ -4,7 +4,7 @@ from setuptools import *
 
 setup(
     name='cbutil',
-    version='1.2.1',
+    version='1.2.2',
     packages=find_namespace_packages('inc'),
     package_dir={'cbutil': 'inc/cbutil'},
     install_requires=[
