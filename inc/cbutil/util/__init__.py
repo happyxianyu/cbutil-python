@@ -2,6 +2,7 @@ import re
 
 from .iterutil import *
 from .path import *
+from .adaptor import *
 # from .util import *
 # from .url import *
 # from .pbar import *

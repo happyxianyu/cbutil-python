@@ -1,5 +1,7 @@
+__all__ = ['DictObjectAdaptor']
+
 class DictObjectAdaptor:
-    def __init__(self, o: object, keys):
+    def __init__(self, o: object, keys = None):
         self.o = o
         if keys is None:
             self._keys = None
@@ -14,7 +16,7 @@ class DictObjectAdaptor:
 
     def items(self):
         for k in self.keys():
-            yield getattr(self.o, k)
+            yield k, getattr(self.o, k)
 
     def __getitem__(self, key):
         if self._keys is not None and key not in self._keys:
