@@ -1,1 +1,2 @@
-from .SignSet import SignSet
+from .signed_set import SignedSet
+
