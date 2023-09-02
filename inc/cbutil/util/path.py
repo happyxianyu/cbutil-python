@@ -5,8 +5,6 @@ import shutil
 from distutils import file_util, dir_util
 from zipfile import ZipFile
 
-import chardet
-
 # from .pbar import file_proc_bar
 from .util import get_unique_name
 # from itertools import chain
@@ -129,16 +127,27 @@ class Path(_Path):
     def rel_to(self,path):
         return super().relative_to(path)
 
-    def open(self,mode, buffering=-1, encoding=None, *args, **kwargs):
+    def open(self, mode, buffering=-1, encoding='utf8', newline='', *args, **kwargs):
+        if 'b' in mode:
+            encoding=None
+            newline=None
         if not self.prnt.exists():
             self.prnt.mkdir()
-        if encoding == None:
-            if mode in ('r','r+','rw'):
-                with super().open('rb',buffering) as fr:
-                    encoding = chardet.detect(fr.read(512))['encoding']
-                    if encoding == 'ascii':
-                        encoding = 'UTF-8'
-        return super().open(mode,buffering, encoding,*args,**kwargs)
+        return super().open(mode=mode,buffering=buffering, encoding=encoding, newline=newline, *args,**kwargs)
+    
+    def write(self, content):
+        if isinstance(content, bytes):
+            with self.open('wb') as f:
+                f.write(content)
+        elif isinstance(content, str):
+            with self.open('w') as f:
+                f.write(content)
+        else:
+            raise TypeError
+        
+    def read_text(self, encoding='utf8'):
+        with self.open('r',encoding=encoding) as f:
+            return f.read()
     
     def mkdir(self, *args, update =False, parents =True, **kwargs):
         '''

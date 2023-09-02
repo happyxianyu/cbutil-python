@@ -51,4 +51,15 @@ def test_copy_sons_to():
     p1.copy_sons_to(p2)
     assert (p2/'1').exists()
 
+def test_open():
+    test_path = test_tmp_path/'3'
+    p_n = test_path/'n.txt'
+    p_rn = test_path/'rn.txt'
+    p_n.write('\n')
+    assert '\n' == p_n.read_text()
+    p_rn.write('\r\n')
+    assert '\r\n' == p_rn.read_text()
+    b = test_path/'b.txt'
+    b.write('你好'.encode())
+    assert '你好'.encode() == b.read_bytes()
 
