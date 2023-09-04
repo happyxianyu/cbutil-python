@@ -18,7 +18,7 @@ def dfs1(n, leaf_only=True):
         if not leaf_only:
             yield n
         for n_ in n:
-            yield from dfs1(n_)
+            yield from dfs1(n_, leaf_only)
 
 
 def dfs2(n, is_leaf, leaf_only=True):
@@ -33,7 +33,7 @@ def dfs2(n, is_leaf, leaf_only=True):
         if not leaf_only:
             yield n
         for n_ in n:
-            yield from dfs2(n_, is_leaf)
+            yield from dfs2(n_, is_leaf, leaf_only)
 
 def dfs3(n, get_sons, leaf_only=True):
     '''
@@ -46,7 +46,7 @@ def dfs3(n, get_sons, leaf_only=True):
         if not leaf_only:
             yield n
         for n_ in get_sons(n):
-            yield from dfs3(n_, get_sons)
+            yield from dfs3(n_, get_sons, leaf_only)
 
 
 def dfs4(n, get_sons, is_leaf, leaf_only=True):
@@ -61,7 +61,7 @@ def dfs4(n, get_sons, is_leaf, leaf_only=True):
         if not leaf_only:
             yield n
         for n_ in get_sons(n):
-            yield from dfs4(n_, get_sons, is_leaf)
+            yield from dfs4(n_, get_sons, is_leaf, leaf_only)
 
 
 
