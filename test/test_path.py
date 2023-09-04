@@ -5,8 +5,6 @@ from cbutil import *
 proj_root_path = Path(__file__).prnt.prnt
 test_tmp_path = proj_root_path/Path('tmp/test/path')
 
-
-
 def test_make_copy():
     test_tmp_path.mkdir()
     f1 = test_tmp_path/'123'
